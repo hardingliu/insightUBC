@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Room Explorer</title>
+
+    <link rel="stylesheet" href="../public/main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
+    <meta name="author" content="Zongming Liu & Yu Guo">
+</head>
+
+<body>
+
+<header>
+    <h1 align="center">insightUBC - Room Explorer</h1>
+</header>
+
+<div>
+    <nav>
+        <ul>
+            <li><a href="index.html">Main Page</a></li>
+            <li><a href="course-explorer.html">Course Explorer</a></li>
+            <li><a href="room-explorer.html">Room Explorer</a></li>
+            <li><a href="scheduler.html">Scheduler</a></li>
+            <li><a href="novel-exploration.html">Novel Exploration</a></li>
+        </ul>
+    </nav>
+</div>
+
+
+<div id="div1">
+    <h4 align="center">Start exploring rooms...</h4>
+    <form id="form_0" action="room-explorer.html">
+
+        <div>
+            <label for="rooms_0">Show all rooms in building (building code, e.g., DMP):</label>
+            <input type="text" name="rooms_0" placeholder="building code" id="rooms_0" />
+        </div>
+
+        <div>
+            <label for="rooms_1">Show all rooms within</label>
+            <input type="number" name="rooms_1" placeholder="meter" id="rooms_1"/>
+            <label for="rooms_2">meters of building:</label>
+            <input type="text" name="rooms_2" placeholder="building code" id="rooms_2"/>
+        </div>
+
+        <div>
+            <label for="rooms_3">Show all rooms over size:</label>
+            <input type ="number" name="rooms_3" placeholder="size" id="rooms_3" />
+        </div>
+
+        <div>
+            <label for="rooms_4">Show all rooms over size</label>
+            <input type="number" name="rooms_4" placeholder="size" id="rooms_4" />
+            <label for="rooms_5">within</label>
+            <input type="number" name="rooms_5" placeholder="meter" id="rooms_5"/>
+            <label for="rooms_6">meters of building:</label>
+            <input type="text" name="rooms_6" placeholder="building code" id="rooms_6" />
+        </div>
+
+        <div>
+            <label for="rooms_7">Show all rooms with type</label>
+            <input type="text" name="rooms_7" placeholder="room type" id="rooms_7" />
+            <label for="rooms_8">or furniture:</label>
+            <input type="text" name="rooms_8" placeholder="furniture" id="rooms_8" />
+        </div>
+
+        <div>
+            <label for="rooms_9">Show all rooms with type</label>
+            <input type="text" name="rooms_9" placeholder="room type" id="rooms_9" />
+            <label for= rooms_a>or furniture</label>
+            <input type="text" name="rooms_a" placeholder="furniture" id="rooms_a" />
+            <label for="rooms_b">within</label>
+            <input type="number" name="rooms_b" placeholder="meter" id="rooms_b" />
+            <label for="rooms_c">meters of building:</label>
+            <input type="text" name="rooms_c" placeholder="building code" id="rooms_c" />
+        </div>
+    </form>
+
+    <div align="left">
+        <button type="submit" id="submit_query" class="btn btn-primary">Submit</button>
+    </div>
+
+    <div id="genTable">
+        <table id="render">
+        </table>
+    </div>
+
+</div>
+
+
+<div>
+    <script>
+        $(document).ready(function () {
+            $('#submit_query').click(function () {
+                event.preventDefault();
+                var query = {};
+                var where = {};
+                var or=[];
+                where["OR"] = or;
+
+                var options = {};
+                options["FORM"] = "TABLE";
+                var columns = [];
+
+                options["COLUMNS"] = columns;
+                query["WHERE"] = where;
+                query["OPTIONS"] = options;
+
+                var transformations = {};
+                var group = ["rooms_lat", "rooms_lon"];
+                var apply = [];
+                var distance = 0;
+
+                var is_0 = {};
+                var obj_0 = {};
+                var is_1 = {};
+                var obj_1 = {};
+
+                var lat = 0;
+                var lon = 0;
+
+                var check = false;
+
+                if (document.getElementById("form_0")[0].value.length !== 0){
+                    var is = {};
+                    is["rooms_shortname"] = document.getElementById("form_0")[0].value;
+                    var is_obj = {};
+                    is_obj["IS"] = is;
+                    or.push(is_obj);
+                    columns.push("rooms_fullname", "rooms_shortname", "rooms_number", "rooms_name", "rooms_address",
+                        "rooms_lat", "rooms_lon", "rooms_seats", "rooms_type", "rooms_furniture", "rooms_href");
+                }
+
+                else if (document.getElementById("form_0")[1].value.length !==0 && document.getElementById("form_0")[2].value.length !==0) {
+                    check = true;
+                    var is_2 = {};
+                    is_2["rooms_shortname"] = document.getElementById("form_0")[2].value;
+                    var is_2_obj = {};
+                    is_2_obj["IS"] = is_2;
+                    transformations["GROUP"] = group;
+                    transformations["APPLY"] = apply;
+                    query["TRANSFORMATIONS"] = transformations;
+                    or.push(is_2_obj);
+                    columns.push("rooms_lat", "rooms_lon");
+                    distance = document.getElementById("form_0")[1].valueAsNumber;
+                    distance = distance / 1000;
+
+                    $.ajax({
+                        url: 'http://localhost:4321/query',
+                        type: 'post',
+                        data: JSON.stringify(query),
+                        dataType: 'json',
+                        contentType: 'application/json'
+                    }).done(function(data) {
+                        if(data["render"] === "TABLE") {
+                            if( data["result"].length === 0 ) {
+                                alert("There is no such room/building existed");
+                            } else {
+                                var location = data["result"][0];
+                                lat = location["rooms_lat"];
+                                lon = location["rooms_lon"];
+                            }
+                        }
+                    }).fail(function(e) {
+                        alert(e);
+                    });
+
+                    query = {
+                        "WHERE": {},
+                        "OPTIONS": {
+                            "COLUMNS": ["rooms_fullname", "rooms_shortname", "rooms_number", "rooms_name", "rooms_address",
+                                "rooms_lat", "rooms_lon", "rooms_seats", "rooms_type", "rooms_furniture", "rooms_href"],
+                            "FORM": "TABLE"
+                        }
+                    };
+                }
+
+                else if (document.getElementById("form_0")[3].value.length !== 0) {
+                    query = {
+                        "WHERE": {
+                            "GT": {"rooms_seats": document.getElementById("form_0")[3].valueAsNumber}
+                        },
+                        "OPTIONS": {
+                            "COLUMNS": ["rooms_fullname", "rooms_shortname", "rooms_number", "rooms_name", "rooms_address",
+                                "rooms_lat", "rooms_lon", "rooms_seats", "rooms_type", "rooms_furniture", "rooms_href"],
+                            "FORM": "TABLE"
+                        }
+                    };
+                }
+
+                else if (document.getElementById("form_0")[4].value.length !==0 &&
+                    document.getElementById("form_0")[5].value.length !==0 &&
+                    document.getElementById("form_0")[6].value.length !==0) {
+
+                    check=true;
+                    var is_3 = {};
+                    is_3["rooms_shortname"] = document.getElementById("form_0")[6].value;
+                    var is_3_obj = {};
+                    is_3_obj["IS"] = is_3;
+                    transformations["GROUP"] = group;
+                    transformations["APPLY"] = apply;
+                    query["TRANSFORMATIONS"] = transformations;
+                    or.push(is_3_obj);
+                    columns.push("rooms_lat", "rooms_lon");
+                    distance = document.getElementById("form_0")[5].valueAsNumber;
+                    distance = distance/1000;
+
+                    query = JSON.stringify(query);
+                    $.ajax({
+                        url: 'http://localhost:4321/query',
+                        type: 'post',
+                        data: query,
+                        dataType: 'json',
+                        contentType: 'application/json'
+                    }).done(function(data) {
+                        if(data["render"] === "TABLE") {
+                            if( data["result"].length === 0 ) {
+                                alert("There is no such room/building existed");
+                            } else {
+                                var location = data["result"][0];
+                                lat = location["rooms_lat"];
+                                lon = location["rooms_lon"];
+                            }
+                        }
+                    }).fail(function(e) {
+                        alert(e);
+                    });
+                    query = {
+                        "WHERE": {
+                            "GT": {
+                                "rooms_seats": document.getElementById("form_0")[4].valueAsNumber
+                            }
+                        },
+                        "OPTIONS": {
+                            "COLUMNS": ["rooms_fullname", "rooms_shortname", "rooms_number", "rooms_name", "rooms_address",
+                                "rooms_lat", "rooms_lon", "rooms_seats", "rooms_type", "rooms_furniture", "rooms_href"],
+                            "FORM": "TABLE"
+                        }
+                    };
+
+                }
+
+                else if (document.getElementById("form_0")[7].value.length!==0 ||
+                    document.getElementById("form_0")[8].value.length!==0) {
+                    is_0["rooms_type"] = document.getElementById("form_0")[7].value;
+                    obj_0["IS"] = is_0;
+                    is_1["rooms_furniture"] = document.getElementById("form_0")[8].value;
+                    obj_1["IS"] = is_1;
+                    or.push(obj_0, obj_1);
+                    columns.push("rooms_fullname", "rooms_shortname", "rooms_number", "rooms_name", "rooms_address",
+                        "rooms_lat", "rooms_lon", "rooms_seats", "rooms_type", "rooms_furniture", "rooms_href");
+                }
+
+                else if ((document.getElementById("form_0")[9].value.length!==0 ||
+                    document.getElementById("form_0")[10].value.length!==0) &&
+                    document.getElementById("form_0")[11].value.length !==0
+                    && document.getElementById("form_0")[12].value.length !==0)
+                {
+                    check=true;
+                    var is_4 = {};
+                    is_4["rooms_shortname"] = document.getElementById("form_0")[12].value;
+                    var is_4_obj = {};
+                    is_4_obj["IS"] = is_4;
+                    transformations["GROUP"] = group;
+                    transformations["APPLY"] = apply;
+                    query["TRANSFORMATIONS"] = transformations;
+                    or.push(is_4_obj);
+                    columns.push("rooms_lat", "rooms_lon");
+                    distance = document.getElementById("form_0")[11].valueAsNumber;
+                    distance = distance/1000;
+
+                    query = JSON.stringify(query);
+                    $.ajax({
+                        url: 'http://localhost:4321/query',
+                        type: 'post',
+                        data: query,
+                        dataType: 'json',
+                        contentType: 'application/json'
+                    }).done(function(data) {
+                        if(data["render"] === "TABLE") {
+                            if( data["result"].length === 0 ) {
+                                alert("There is no such room/building existed");
+                            } else {
+                                var location = data["result"][0];
+                                lat = location["rooms_lat"];
+                                lon = location["rooms_lon"];
+                            }
+                        }
+                    }).fail(function(e) {
+                        alert(e);
+                    });
+                    query = {
+                        "WHERE": {
+                            "OR": [
+                                {"IS": {"rooms_type": document.getElementById("form_0")[9].value}},
+                                {"IS": {"rooms_furniture": document.getElementById("form_0")[10].value}}
+                            ]
+                        },
+                        "OPTIONS": {
+                            "COLUMNS": ["rooms_fullname", "rooms_shortname", "rooms_number", "rooms_name", "rooms_address",
+                                "rooms_lat", "rooms_lon", "rooms_seats", "rooms_type", "rooms_furniture", "rooms_href"],
+                            "FORM": "TABLE"
+                        }
+                    };
+                }
+
+                query = JSON.stringify(query);
+
+                $.ajax({
+                    url: 'http://localhost:4321/query',
+                    type: 'post',
+                    data: query,
+                    dataType: 'json',
+                    contentType: 'application/json'
+                }).done(function (data) {
+                    if (data["render"] === "TABLE") {
+                        if (data["result"].length === 0) {
+                            alert("There is no such room/building existed");
+                        } else {
+                            if (check) {
+                                var result = data["result"];
+                                var newResult= [];
+                                for (var i=0; i<result.length; i++) {
+                                    var d = getDistance(result[i]["rooms_lat"], result[i]["rooms_lon"], lat, lon);
+                                    if (d <= distance) {
+                                        result[i]["distance"] = d * 1000;
+                                        newResult.push(result[i]);
+                                    }
+                                }
+                                generateTable(newResult);
+                            } else {
+                                generateTable(data["result"]);
+                            }
+                        }
+                    }
+                }).fail(function (e) {
+                    alert(e);
+                });
+
+            });
+
+            function generateTable(data) {
+                var columns = [];
+                Object.keys(data[0]).forEach(function (title) {
+                    columns.push({
+                        head: title,
+                        cl: "title",
+                        html: function (d) {
+                            return d[title]
+                        }
+                    });
+                });
+                var container = d3.select("#render");
+                container.html("");
+                container.selectAll("*").remove();
+                var table = container;
+
+                table.append("thead").append("tr")
+                    .selectAll("th")
+                    .data(columns).enter()
+                    .append("th")
+                    .attr("class", function (d) {
+                        return d["cl"]
+                    })
+                    .text(function (d) {
+                        return d["head"]
+                    });
+
+                table.append("tbody")
+                    .selectAll("tr")
+                    .data(data).enter()
+                    .append("tr")
+                    .selectAll("td")
+                    .data(function (row, i) {
+                        return columns.map(function (c) {
+                            var cell = {};
+                            d3.keys(c).forEach(function (k) {
+                                cell[k] = typeof c[k] === "function" ? c[k](row, i) : c[k];
+                            });
+                            return cell;
+                        });
+                    }).enter()
+                    .append("td")
+                    .html(function (d) {
+                        return d["html"]
+                    })
+                    .attr("class", function (d) {
+                        return d["cl"]
+                    });
+            }
+
+            function getDistance(lat1,lon1,lat2,lon2) {
+                var R = 6371;
+                var dLat = deg2rad(lat2-lat1);
+                var dLon = deg2rad(lon2-lon1);
+                var a =
+                    Math.sin(dLat/2) * Math.sin(dLat/2) +
+                    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                    Math.sin(dLon/2) * Math.sin(dLon/2)
+                ;
+                var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                return R * c;
+            }
+
+            function deg2rad(deg) {
+                return deg * (Math.PI/180);
+            }
+
+        });
+    </script>
+</div>
+
+
+
+
+</body>
+
+</html>
