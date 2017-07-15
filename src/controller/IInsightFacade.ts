@@ -13,8 +13,8 @@ export interface InsightResponse {
 export interface QueryRequest {
     // you can define your own structure that complies with the EBNF here
     [key: string] : any;
-    'WHERE': {};
-    'OPTIONS': {};
+    WHERE: {};
+    OPTIONS: {};
 }
 
 export interface IInsightFacade {
