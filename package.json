@@ -3,7 +3,10 @@
   "description": "CPSC 310 project",
   "homepage": "https://github.com/zonogmingliu/insightUBC",
   "author": "Zongming Liu",
-  "contributors": ["Zongming Liu", "Yu Guo"],
+  "contributors": [
+    "Zongming Liu",
+    "Yu Guo"
+  ],
   "license": "GPL-3.0",
   "repository": "N/A",
   "bugs": "",

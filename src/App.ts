@@ -17,10 +17,11 @@ export class App {
         // add the dataset when starting the server
         let courses: any = fs.readFileSync(__dirname + "/../test/courses.zip");
         let rooms: any = fs.readFileSync(__dirname + "/../test/rooms.zip");
+
         let insightFacade: InsightFacade = new InsightFacade();
+
         insightFacade.addDataset("courses", courses).then().catch();
         insightFacade.addDataset("rooms", rooms).then().catch();
-
 
         Log.info('App::initServer( ' + port + ' ) - start');
         let s = new Server(port);
