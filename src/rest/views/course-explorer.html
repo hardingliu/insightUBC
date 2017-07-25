@@ -17,225 +17,236 @@
 
 <body>
 
-<header>
-    <h1 align="center">insightUBC - Course Explorer</h1>
-</header>
+    <header>
+        <h1 align="center">insightUBC - Course Explorer</h1>
+    </header>
 
-<div id="div0">
-    <nav>
-        <ul>
-            <li><a href="index.html">Main Page</a></li>
-            <li><a href="course-explorer.html">Course Explorer</a></li>
-            <li><a href="room-explorer.html">Room Explorer</a></li>
-            <li><a href="scheduler.html">Scheduler</a></li>
-            <li><a href="novel-exploration.html">Novel Exploration</a></li>
-        </ul>
-    </nav>
-</div>
+    <div id="div0">
+        <nav>
+            <ul>
+                <li><a href="index.html">Main Page</a></li>
+                <li><a href="course-explorer.html">Course Explorer</a></li>
+                <li><a href="room-explorer.html">Room Explorer</a></li>
+                <li><a href="scheduler.html">Scheduler</a></li>
+                <li><a href="novel-exploration.html">Novel Exploration</a></li>
+            </ul>
+        </nav>
+    </div>
 
-<div id="div1">
-    <h4 align="center">Start exploring courses...</h4>
-    <form id="form_0" action="course-explorer.html">
-        <div>
-            <label for="courses_size">Course Size:</label>
-            <input type="text" name="courses_size" class="form-control" placeholder="course size" id="courses_size" />
-        </div>
-        <div>
-            <label for="courses_dept">Course Department:</label>
-            <input type="text" name="courses_dept" class="form-control" placeholder="course department" id="courses_dept" />
-        </div>
-        <div>
-            <label for="courses_id">Course Number:</label>
-            <input type ="text" name="courses_id" class="form-control" placeholder="course number" id="courses_id" />
-        </div>
-        <div>
-            <label for="courses_instructor">Course Instructor:</label>
-            <input type="text" name="courses_instructor" class="form-control" placeholder="course instructor" id="courses_instructor" />
-        </div>
-        <div>
-            <label for="courses_title">Course Title:</label>
-            <input type="text" name="courses_title" class="form-control" placeholder="course title" id="courses_title" />
-        </div>
-    </form>
+    <div id="div1">
+        <h4 align="center">Start exploring courses...</h4>
+        <form id="form_0" action="course-explorer.html">
+            <div>
+                <label for="courses_size">Course Size:</label>
+                <input type="text" name="courses_size" class="form-control" placeholder="course size" id="courses_size" />
+            </div>
+            <div>
+                <label for="courses_dept">Course Department:</label>
+                <input type="text" name="courses_dept" class="form-control" placeholder="course department" id="courses_dept" />
+            </div>
+            <div>
+                <label for="courses_id">Course Number:</label>
+                <input type="text" name="courses_id" class="form-control" placeholder="course number" id="courses_id" />
+            </div>
+            <div>
+                <label for="courses_instructor">Course Instructor:</label>
+                <input type="text" name="courses_instructor" class="form-control" placeholder="course instructor" id="courses_instructor" />
+            </div>
+            <div>
+                <label for="courses_title">Course Title:</label>
+                <input type="text" name="courses_title" class="form-control" placeholder="course title" id="courses_title" />
+            </div>
+        </form>
 
-    <h4 align="center">Choose the order option(s)?</h4>
+        <h4 align="center">Choose the order option(s)?</h4>
+        <div>
+            <label for="checkbox0">Check this box for Courses / Order options</label>
+            <input type="checkbox" id="checkbox0" name="zeroth_checkbox">
+            <br>
+            <label for="checkbox1">Order by: the most failing students</label>
+            <input type="checkbox" id="checkbox1" value="second_checkbox">
+            <label for="checkbox2">Order by the most passing students</label>
+            <input type="checkbox" id="checkbox2" value="third_checkbox">
+            <label for="checkbox3">Order by average grade</label>
+            <input type="checkbox" id="checkbox3" value="fourth_checkbox">
+            <br>
+            <label for="checkbox4">Increasing order</label>
+            <input type="checkbox" id="checkbox4" value="fifth_checkbox">
+            <label for="checkbox5">Decreasing order</label>
+            <input type="checkbox" id="checkbox5" value="sixth_checkbox">
+        </div>
+
+        <div align="left">
+            <button type="submit" id="submit_query" class="btn btn-primary">Submit</button>
+        </div>
+
+        <div id="genTable">
+            <table id="render">
+            </table>
+        </div>
+
+
+    </div>
+
+
     <div>
-        <label for="checkbox0">Check this box for Courses / Order options</label>
-        <input type="checkbox" id="checkbox0" name="zeroth_checkbox">
-        <br>
-        <label for="checkbox1">Order by: the most failing students</label>
-        <input type="checkbox" id="checkbox1" value="second_checkbox">
-        <label for="checkbox2">Order by the most passing students</label>
-        <input type="checkbox" id="checkbox2" value="third_checkbox">
-        <label for="checkbox3">Order by average grade</label>
-        <input type="checkbox" id="checkbox3" value="fourth_checkbox">
-        <br>
-        <label for="checkbox4">Increasing order</label>
-        <input type="checkbox" id="checkbox4" value="fifth_checkbox">
-        <label for="checkbox5">Decreasing order</label>
-        <input type="checkbox" id="checkbox5" value="sixth_checkbox">
-    </div>
+        <script>
+            $(document).ready(function() {
+                $('#submit_query').click(function() {
+                    event.preventDefault();
+                    var query = {};
 
-    <div align="left">
-        <button type="submit" id="submit_query" class="btn btn-primary">Submit</button>
-    </div>
+                    var where = {};
+                    var and = [];
 
-    <div id="genTable">
-        <table id="render">
-        </table>
-    </div>
+                    var options = {};
+                    options["FORM"] = "TABLE";
+                    var columns = [];
+                    var order = {};
+                    var keys = [];
 
+                    var transformations = {};
+                    var group = ["courses_dept", "courses_id"];
+                    var apply = [];
 
-</div>
-
-
-<div>
-    <script>
-        $(document).ready(function () {
-            $('#submit_query').click(function () {
-                event.preventDefault();
-                var query = {};
-
-                var where = {};
-                var and = [];
-
-                var options = {};
-                options["FORM"] = "TABLE";
-                var columns = [];
-                var order = {};
-                var keys= [];
-
-                var transformations = {};
-                var group = ["courses_dept", "courses_id"];
-                var apply = [];
-
-                var form_data = document.getElementById("form_0");
-                for (var i = 0; i < form_data.length; i++) {
-                    if (form_data[i].value !== form_data[i].defaultValue) {
-                        var objInIs = {};
-                        var objIs = {};
-                        objInIs[form_data[i].id] = form_data[i].value;
-                        objIs["IS"] = objInIs;
-                        and.push(objIs);
-                    }
-                }
-                where["AND"] = and;
-                query["WHERE"] = where;
-
-                if ($('#checkbox0').is(':checked')) {
-                    transformations["GROUP"] = group;
-                    columns.push("courses_dept", "courses_id");
-                    if ($('#checkbox1').is(':checked')) {
-                        apply.push({"mostFailing":{"MAX":"courses_fail"}});
-                        keys.push("mostFailing");
-                        columns.push("mostFailing");
-                    }
-                    if ($('#checkbox2').is(':checked')) {
-                        apply.push({"mostPass": {"MAX": "courses_pass"}});
-                        keys.push("mostPass");
-                        columns.push("mostPass");
-                    }
-                    if ($('#checkbox3').is(':checked')) {
-                        apply.push({"avgGrade": { "AVG": "courses_avg"}});
-                        keys.push("avgGrade");
-                        columns.push("avgGrade");
-                    }
-                    if ($('#checkbox4').is(':checked')) {
-                        order["dir"] = "UP";
-                        order["keys"] = keys;
-                        options["ORDER"] = order;
-                    }
-                    if ($('#checkbox5').is(':checked')) {
-                        order["dir"]= "DOWN";
-                        order["keys"] = keys;
-                        options["ORDER"] = order;
-                    }
-                    options["COLUMNS"] = columns;
-                    transformations["APPLY"] = apply;
-                    query["TRANSFORMATIONS"] = transformations;
-                    query["OPTIONS"] = options;
-                } else {
-                    columns.push("courses_dept", "courses_id", "courses_avg", "courses_instructor", "courses_title", "courses_pass",
-                        "courses_fail", "courses_audit", "courses_uuid", "courses_size");
-                    options["COLUMNS"] = columns;
-                    query["OPTIONS"] = options;
-                }
-                query = JSON.stringify(query);
-
-                $.ajax({
-                    url: 'http://localhost:4321/query',
-                    type: 'post',
-                    data: query,
-                    dataType: 'json',
-                    contentType: 'application/json'
-                }).done(function(data) {
-                    if(data["render"] === "TABLE") {
-                        if( data["result"].length === 0 ) {
-                            alert("There is no such course/section existed");
-                        } else {
-                            generateTable(data["result"]);
+                    var form_data = document.getElementById("form_0");
+                    for (var i = 0; i < form_data.length; i++) {
+                        if (form_data[i].value !== form_data[i].defaultValue) {
+                            var objInIs = {};
+                            var objIs = {};
+                            objInIs[form_data[i].id] = form_data[i].value;
+                            objIs["IS"] = objInIs;
+                            and.push(objIs);
                         }
                     }
-                }).fail(function() {
-                    alert("Error occurs when trying to querying about the courses");
-                });
-            });
+                    where["AND"] = and;
+                    query["WHERE"] = where;
 
-            function generateTable(data) {
-                var columns = [];
-                Object.keys(data[0]).forEach(function (title) {
-                    columns.push({
-                        head: title,
-                        cl: "title",
-                        html: function (d) {
-                            return d[title]
-                        }
-                    });
-                });
-                var container = d3.select("#render");
-                container.html("");
-                container.selectAll("*").remove();
-                var table = container;
-
-                table.append("thead").append("tr")
-                    .selectAll("th")
-                    .data(columns).enter()
-                    .append("th")
-                    .attr("class", function (d) {
-                        return d["cl"]
-                    })
-                    .text(function (d) {
-                        return d["head"]
-                    });
-
-                table.append("tbody")
-                    .selectAll("tr")
-                    .data(data).enter()
-                    .append("tr")
-                    .selectAll("td")
-                    .data(function (row, i) {
-                        return columns.map(function (c) {
-                            // compute cell values for this specific row
-                            var cell = {};
-                            d3.keys(c).forEach(function (k) {
-                                cell[k] = typeof c[k] === "function" ? c[k](row, i) : c[k];
+                    if ($('#checkbox0').is(':checked')) {
+                        transformations["GROUP"] = group;
+                        columns.push("courses_dept", "courses_id");
+                        if ($('#checkbox1').is(':checked')) {
+                            apply.push({
+                                "mostFailing": {
+                                    "MAX": "courses_fail"
+                                }
                             });
-                            return cell;
-                        });
-                    }).enter()
-                    .append("td")
-                    .html(function (d) {
-                        return d["html"]
-                    })
-                    .attr("class", function (d) {
-                        return d["cl"]
+                            keys.push("mostFailing");
+                            columns.push("mostFailing");
+                        }
+                        if ($('#checkbox2').is(':checked')) {
+                            apply.push({
+                                "mostPass": {
+                                    "MAX": "courses_pass"
+                                }
+                            });
+                            keys.push("mostPass");
+                            columns.push("mostPass");
+                        }
+                        if ($('#checkbox3').is(':checked')) {
+                            apply.push({
+                                "avgGrade": {
+                                    "AVG": "courses_avg"
+                                }
+                            });
+                            keys.push("avgGrade");
+                            columns.push("avgGrade");
+                        }
+                        if ($('#checkbox4').is(':checked')) {
+                            order["dir"] = "UP";
+                            order["keys"] = keys;
+                            options["ORDER"] = order;
+                        }
+                        if ($('#checkbox5').is(':checked')) {
+                            order["dir"] = "DOWN";
+                            order["keys"] = keys;
+                            options["ORDER"] = order;
+                        }
+                        options["COLUMNS"] = columns;
+                        transformations["APPLY"] = apply;
+                        query["TRANSFORMATIONS"] = transformations;
+                        query["OPTIONS"] = options;
+                    } else {
+                        columns.push("courses_dept", "courses_id", "courses_avg", "courses_instructor", "courses_title", "courses_pass",
+                            "courses_fail", "courses_audit", "courses_uuid", "courses_size");
+                        options["COLUMNS"] = columns;
+                        query["OPTIONS"] = options;
+                    }
+                    query = JSON.stringify(query);
+
+                    $.ajax({
+                        url: 'http://localhost:4321/query',
+                        type: 'post',
+                        data: query,
+                        dataType: 'json',
+                        contentType: 'application/json'
+                    }).done(function(data) {
+                        if (data["render"] === "TABLE") {
+                            if (data["result"].length === 0) {
+                                alert("There is no such course/section existed");
+                            } else {
+                                generateTable(data["result"]);
+                            }
+                        }
+                    }).fail(function() {
+                        alert("Error occurs when trying to querying about the courses");
                     });
-            }
+                });
 
-        });
+                function generateTable(data) {
+                    var columns = [];
+                    Object.keys(data[0]).forEach(function(title) {
+                        columns.push({
+                            head: title,
+                            cl: "title",
+                            html: function(d) {
+                                return d[title]
+                            }
+                        });
+                    });
+                    var container = d3.select("#render");
+                    container.html("");
+                    container.selectAll("*").remove();
+                    var table = container;
 
-    </script>
-</div>
+                    table.append("thead").append("tr")
+                        .selectAll("th")
+                        .data(columns).enter()
+                        .append("th")
+                        .attr("class", function(d) {
+                            return d["cl"]
+                        })
+                        .text(function(d) {
+                            return d["head"]
+                        });
+
+                    table.append("tbody")
+                        .selectAll("tr")
+                        .data(data).enter()
+                        .append("tr")
+                        .selectAll("td")
+                        .data(function(row, i) {
+                            return columns.map(function(c) {
+                                // compute cell values for this specific row
+                                var cell = {};
+                                d3.keys(c).forEach(function(k) {
+                                    cell[k] = typeof c[k] === "function" ? c[k](row, i) : c[k];
+                                });
+                                return cell;
+                            });
+                        }).enter()
+                        .append("td")
+                        .html(function(d) {
+                            return d["html"]
+                        })
+                        .attr("class", function(d) {
+                            return d["cl"]
+                        });
+                }
+
+            });
+        </script>
+    </div>
 
 
 </body>
