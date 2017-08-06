@@ -1,15 +1,17 @@
 /**
  * This is the main programmatic entry point for the project.
  */
-import {IInsightFacade, InsightResponse, QueryRequest} from "./IInsightFacade";
 
+'use strict';
+
+import {IInsightFacade, InsightResponse, QueryRequest} from "./IInsightFacade";
 import Log from "../Util";
 
-"use strict";
 import fs = require("fs");
 import JSZip = require("jszip");
-const parse5 = require("parse5");
 import http = require("http");
+const parse5 = require("parse5");
+
 interface GeoResponse {
     lat?: number;
     lon?: number;

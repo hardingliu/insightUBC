@@ -1,10 +1,9 @@
-"use strict";
+'use strict';
 var Util_1 = require("../Util");
-"use strict";
 var fs = require("fs");
 var JSZip = require("jszip");
-var parse5 = require("parse5");
 var http = require("http");
+var parse5 = require("parse5");
 var myMap = new Map();
 var idChecker;
 var InsightFacade = (function () {
