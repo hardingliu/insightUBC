@@ -4,6 +4,9 @@
 # node-modules:
 node_modules/
 
+# ignore data file
+src/data/
+
 # js and js.map files compiled from typescript source code:
 **/*.js
 **/*.js.map
