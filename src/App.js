@@ -25,5 +25,5 @@ var App = (function () {
 exports.App = App;
 Util_1.default.info('App - starting');
 var app = new App();
-app.initServer(4321);
+app.initServer(4444);
 //# sourceMappingURL=App.js.map

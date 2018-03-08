@@ -79,7 +79,7 @@ var InsightFacade = (function () {
                         else {
                             var myJSON = JSON.stringify(myHashMap);
                             myMap.set(id, myJSON);
-                            fs.writeFile(__dirname + "/" + id, myJSON, { flag: 'wx' }, function (err) {
+                            fs.writeFile(__dirname + "/../data/" + id, myJSON, { flag: 'wx' }, function (err) {
                                 if (err) {
                                     response.code = 201;
                                     response.body = { "message": "Successfully overwritten the file" };
@@ -203,7 +203,7 @@ var InsightFacade = (function () {
                             else {
                                 var myJSON = JSON.stringify(myHashMap);
                                 myMap.set(id, myJSON);
-                                fs.writeFile(__dirname + "/" + id, myJSON, { flag: 'wx' }, function (err) {
+                                fs.writeFile(__dirname + "/../data/" + id, myJSON, { flag: 'wx' }, function (err) {
                                     if (err) {
                                         response.code = 201;
                                         response.body = { "message": "Successfully overwritten the file" };
@@ -227,7 +227,7 @@ var InsightFacade = (function () {
     };
     InsightFacade.prototype.removeDataset = function (id) {
         return new Promise(function (resolve, reject) {
-            fs.unlink(__dirname + "/" + id, function (err) {
+            fs.unlink(__dirname + "/../data/" + id, function (err) {
                 if (err) {
                     var response = {
                         code: 404,

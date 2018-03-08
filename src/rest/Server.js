@@ -26,6 +26,7 @@ var Server = (function () {
                 });
                 that.rest.use(restify.bodyParser({ mapParams: true, mapFiles: true }));
                 that.rest.use(restify.CORS());
+                that.rest.get('/echo/:msg', Server.echo);
                 that.rest.get("/public/.*", restify.serveStatic({
                     'directory': __dirname
                 }));
