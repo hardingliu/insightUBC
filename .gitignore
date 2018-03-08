@@ -4,6 +4,10 @@
 # node-modules:
 node_modules/
 
+# ignore coverage files
+.nyc_output/
+coverage/
+
 # ignore data file
 src/data/
 
