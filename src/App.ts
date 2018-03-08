@@ -36,4 +36,4 @@ export class App {
 // This ends up starting the whole system and listens on a hardcoded port (4321)
 Log.info('App - starting');
 let app = new App();
-app.initServer(4444);
+app.initServer(4321);

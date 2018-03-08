@@ -9,6 +9,7 @@ node_modules/
 **/*.js.map
 
 # User-specific stuff:
+.idea/
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/dictionaries
