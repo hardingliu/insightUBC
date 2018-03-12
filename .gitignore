@@ -9,7 +9,7 @@ node_modules/
 coverage/
 
 # ignore data file
-src/data/
+data/
 
 # js and js.map files compiled from typescript source code:
 **/*.js
