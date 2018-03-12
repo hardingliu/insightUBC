@@ -105,7 +105,7 @@ export default class InsightFacade implements IInsightFacade {
                         else {
                             let myJSON = JSON.stringify(myHashMap);
                             myMap.set(id, myJSON);
-                            fs.writeFile(__dirname + "/../data/" + id, myJSON, {flag: 'wx'}, function (err) {
+                            fs.writeFile(__dirname + "/../../data/" + id, myJSON, {flag: 'wx'}, function (err) {
                                 if (err) {
                                     response.code = 201;
                                     response.body = {"message": "Successfully overwritten the file"};
@@ -235,7 +235,7 @@ export default class InsightFacade implements IInsightFacade {
                             else {
                                 let myJSON = JSON.stringify(myHashMap);
                                 myMap.set(id, myJSON);
-                                fs.writeFile(__dirname + "/../data/" + id, myJSON, {flag: 'wx'}, function (err) {
+                                fs.writeFile(__dirname + "/../../data/" + id, myJSON, {flag: 'wx'}, function (err) {
                                     if (err) {
                                         response.code = 201;
                                         response.body = {"message": "Successfully overwritten the file"};
@@ -262,7 +262,7 @@ export default class InsightFacade implements IInsightFacade {
     removeDataset(id: string): Promise<InsightResponse> {
 
         return new Promise(function (resolve, reject) {
-            fs.unlink(__dirname + "/../data/" + id, function (err) {
+            fs.unlink(__dirname + "/../../data/" + id, function (err) {
                 if (err) {
                     let response = <InsightResponse> {
                         code: 404,
