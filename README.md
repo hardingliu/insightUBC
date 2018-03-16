@@ -39,7 +39,7 @@ If you use Windows; instead try (and hope):
 ### Executing the unit test suite
 
 The sample project ships with some automated unit tests. These commands will execute the suites:
- 
+
 * Test: ```yarn run test``` (or ```yarn test```)
 * Test coverage: ```yarn run cover``` (or ```yarn run coverwin``` if you use Windows). HTML reports can be found: ```./coverage/lcov-report/index.html```
 
@@ -64,9 +64,9 @@ As you change your TypeScript code you will have to re-compile. This can be done
 
 While these instructions are for WebStorm, other IDEs (e.g., VSCode, Atom, etc.) and editors (e.g., Sublime) should be similar, or will at least be compatible with the command line options described above.
 
-To run or test the system in WebStorm you will need to configure run targets: 
+To run or test the system in WebStorm you will need to configure run targets:
 
-* **To run the system**: Go to the ```Run->Edit Configurations``` and tap on the ```+``` and then ```Node.js```. Point the 'JavaScript file' argument to ```src/App.js```. 
+* **To run the system**: Go to the ```Run->Edit Configurations``` and tap on the ```+``` and then ```Node.js```. Point the 'JavaScript file' argument to ```src/App.js```.
 
 * **To run unit tests**: Go to the ```Run->Edit Configurations``` and tap on the ```+``` and then ```Mocha```. Point the 'Test Directory' file argument to ```test/```. You can also optionally tap the ```+``` in the ```Before launch``` box and select ```Compile TypeScript``` if you want to make sure a fresh TypeScript compile is forced before each test run.
 
