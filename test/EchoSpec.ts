@@ -187,8 +187,4 @@ describe("EchoSpec", function () {
                 expect.fail();
             });
     });
-
-
-
-
 });
