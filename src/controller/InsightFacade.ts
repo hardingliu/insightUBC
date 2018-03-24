@@ -103,7 +103,7 @@ export default class InsightFacade implements IInsightFacade {
                         }
 
                         else {
-                            let myJSON = JSON.stringify(myHashMap);
+                            let myJSON = JSON.stringify(myHashMap, null, '  ');
                             myMap.set(id, myJSON);
                             fs.writeFile(__dirname + "/../../data/" + id + ".json", myJSON, {flag: 'wx'}, function (err) {
                                 if (err) {
@@ -233,7 +233,7 @@ export default class InsightFacade implements IInsightFacade {
                             }
 
                             else {
-                                let myJSON = JSON.stringify(myHashMap);
+                                let myJSON = JSON.stringify(myHashMap, null, '  ');
                                 myMap.set(id, myJSON);
                                 fs.writeFile(__dirname + "/../../data/" + id + ".json", myJSON, {flag: 'wx'}, function (err) {
                                     if (err) {
