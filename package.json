@@ -14,7 +14,7 @@
   "version": "0.2.0",
   "devDependencies": {},
   "scripts": {
-    "clean": "rm -rf ./node_modules/ .yarnclean",
+    "clean": "rm -rf ./node_modules/ .yarnclean .nyc_output/ ./coverage ./test/*.js* ./src/*.js* ./src/controller/*.js* ./src/rest/*.js*",
     "cleanwin": "rmdir node_modules .yarnclean /s /q & exit 0",
     "configure": "yarn install",
     "configurewin": "yarn install",
