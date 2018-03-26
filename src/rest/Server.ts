@@ -69,7 +69,7 @@ export default class Server {
 
                 // provides the echo service
                 // curl -is  http://localhost:4321/echo/myMessage
-                // that.rest.get('/echo/:msg', Server.echo);
+                that.rest.get('/echo/:msg', Server.echo);
 
                 // Other endpoints will go here
 
