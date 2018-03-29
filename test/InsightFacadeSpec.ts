@@ -2,8 +2,8 @@
  * Created by harding on 2017-01-30.
  */
 import {expect} from "chai";
-import InsightFacade from "../src/controller/InsightFacade";
-import {InsightResponse} from "../src/controller/IInsightFacade";
+import InsightFacade from "../src/model/InsightFacade";
+import {InsightResponse} from "../src/model/IInsightFacade";
 import fs = require("fs");
 
 describe("InsightFacadeSpec", function () {
