@@ -5,7 +5,7 @@ import Server from './rest/Server';
 import Log from './Util';
 
 // For adding the dataset when the server starts.
-import InsightFacade from "./model/InsightFacade";
+import InsightFacade from "./controller/InsightFacade";
 import fs = require("fs");
 
 /**

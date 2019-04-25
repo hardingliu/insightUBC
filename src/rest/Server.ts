@@ -6,8 +6,8 @@
 import restify = require('restify');
 
 import Log from "../Util";
-import { InsightResponse } from "../model/IInsightFacade";
-import InsightFacade from "../model/InsightFacade";
+import { InsightResponse } from "../controller/IInsightFacade";
+import InsightFacade from "../controller/InsightFacade";
 
 
 
